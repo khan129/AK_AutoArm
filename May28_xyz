@@ -41,6 +41,12 @@ class MyButtons(QtGui.QWidget):
        # self.layout().addWidget(self.chbox_bend)
         self.chbox_stretchy = QtGui.QCheckBox("Stretchy")
         self.layout().addWidget(self.chbox_stretchy)
+        self.chbox_x = QtGui.QCheckBox("X")
+        self.layout().addWidget(self.chbox_x)
+        self.chbox_x = QtGui.QCheckBox("Y")
+        self.layout().addWidget(self.chbox_Y)
+        self.chbox_x = QtGui.QCheckBox("Z")
+        self.layout().addWidget(self.chbox_z)
         btn =QtGui.QPushButton("Go!")
         self.layout().addWidget(btn)
         btn.clicked.connect(self.buttonClicked)
@@ -64,16 +70,14 @@ class MyButtons(QtGui.QWidget):
         cmds.group(em = True, n = UserIn + '_controls01')
         cmds.group(em = True, n= UserIn + '_skeleton01' )
         
-        '''
-        #rename jointlist 
-        for everyjoint in jointList:
-            indexNum = jointList.index(everyobj)
-            cmds.rename(everyjoint, UserIn + '_jnt0')
-            cmds.select(clear = True) 
-            cmds.select( everyjoint, add=True )
-            jointList2 = cmds.ls(orderedSelection = True)
-            
-        '''    
+  
+        if self.chbox_y.isChecked():
+            inputD = 'Y'
+        else if self.chbox_x.isChecked():
+            inputD = 'Z'
+        else if self.chbox_z.isChecked():
+            inputD = 'X'
+        
         firstJoint = jointList[0]
         lastJoint = jointList[-1]
           
@@ -168,9 +172,9 @@ class MyButtons(QtGui.QWidget):
             cmds.pointConstraint(UserIn + '_arm_anim', listDistLoc[1], mo = False)
             cmds.shadingNode ('multiplyDivide', n = UserIn + 'multDivid', asUtility=True)
             cmds.shadingNode ('condition', n = UserIn + 'STREcondNod', asUtility=True)
-            cmds.connectAttr(distDim + '.distance',UserIn +'multDivid.input1Y')
+            cmds.connectAttr(distDim + '.distance',UserIn +'multDivid.input1' + inputD)
             cmds.connectAttr(distDim + '.distance', UserIn +'STREcondNod.firstTerm')
-            cmds.connectAttr(UserIn +'multDivid.outputY', UserIn +'STREcondNod.colorIfTrueR')
+            cmds.connectAttr(UserIn +'multDivid.output'+ inputD, UserIn +'STREcondNod.colorIfTrueR')
             cmds.setAttr(UserIn +'multDivid.operation', 2)
             cmds.setAttr(UserIn +'STREcondNod.operation', 2)
 
@@ -178,13 +182,13 @@ class MyButtons(QtGui.QWidget):
             firstjt_Y = firstJointLoc[1]
 
             
-            cmds.setAttr(UserIn + 'multDivid.input2Y', d_calc)
+            cmds.setAttr(UserIn + 'multDivid.input2'+ inputD, d_calc)
             cmds.setAttr(UserIn + 'STREcondNod.secondTerm', d_calc)
             
             print d_calc
            
             for joints in jointList:
-                cmds.connectAttr(UserIn + 'STREcondNod.outColorR', joints+'.scaleY')
+                cmds.connectAttr(UserIn + 'STREcondNod.outColorR', joints+'.scale'+ inputD)
                  
 
 
