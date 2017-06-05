@@ -73,9 +73,9 @@ class MyButtons(QtGui.QWidget):
   
         if self.chbox_y.isChecked():
             inputD = 'Y'
-        if self.chbox_x.isChecked():
-            inputD = 'Z'
         if self.chbox_z.isChecked():
+            inputD = 'Z'
+        if self.chbox_x.isChecked():
             inputD = 'X'
         
         firstJoint = jointList[0]
