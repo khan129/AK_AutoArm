@@ -138,13 +138,12 @@ class MyButtons(QtGui.QWidget):
         cmds.spaceLocator(n = UserIn + '_anim_loc')
         cmds.pointConstraint('joint2', UserIn + '_anim_loc')
         cmds.pointConstraint('joint2', UserIn + '_anim_loc', rm = True)
-        if self.chbox_z.isChecked():
-            cmds.move( 0, 0, d_calc, UserIn + '_anim_loc', r=True )
         if self.chbox_y.isChecked():
+            cmds.move( 0, 0, d_calc, UserIn + '_anim_loc', r=True )
+        if self.chbox_z.isChecked():
             cmds.move( 0, d_calc, 0, UserIn + '_anim_loc', r=True )
         if self.chbox_x.isChecked():
             cmds.move( d_calc, 0, 0, UserIn + '_anim_loc', r=True )
-        cmds.move( 0, 0, d_calc, UserIn + '_anim_loc', r=True )
         cmds.makeIdentity(UserIn + '_anim_loc', apply=True, translate=True, rotate=True, scale=True )
         cmds.poleVectorConstraint( UserIn + '_anim_loc', UserIn + 'ikRPS_name' )
         
