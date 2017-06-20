@@ -1,4 +1,4 @@
-#June20
+#June8
 from PySide import QtCore, QtGui
 from shiboken import wrapInstance
 import maya.OpenMayaUI as apiUI
@@ -81,8 +81,18 @@ class MyButtons(QtGui.QWidget):
 
         if self.chbox_z.isChecked():
             inputD = 'Z'
+            
+        #set preferred angle
+        cmds.rotate( '90deg', 0, 0, jointList[1] )
+        cmds.joint(jointList[1], e=True, spa=True) 
+        cmds.rotate( 0, 0, 0, jointList[1] )
         if self.chbox_x.isChecked():
             inputD = 'X'
+        #set preferred angle
+        cmds.rotate(0, 0,  '90deg', jointList[1] )
+        cmds.joint(jointList[1], e=True, spa=True) 
+        cmds.rotate( 0, 0, 0, jointList[1] )
+            
         
         firstJoint = jointList[0]
         lastJoint = jointList[-1]
@@ -154,7 +164,7 @@ class MyButtons(QtGui.QWidget):
         if self.chbox_z.isChecked():
             cmds.move( 0, d_calc, 0, UserIn + '_anim_loc', r=True )
         if self.chbox_x.isChecked():
-            cmds.move( d_calc, 0, 0, UserIn + '_anim_loc', r=True )
+            cmds.move( 0, d_calc, 0, UserIn + '_anim_loc', r=True )
         cmds.makeIdentity(UserIn + '_anim_loc', apply=True, translate=True, rotate=True, scale=True )
         cmds.poleVectorConstraint( UserIn + '_anim_loc', UserIn + 'ikRPS_name' )
         
