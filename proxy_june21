@@ -1,0 +1,74 @@
+#june21 PROXY
+
+from PySide import QtCore, QtGui
+from shiboken import wrapInstance
+import maya.OpenMayaUI as apiUI
+import sys
+pjointList = []
+
+cmds.polySphere( r=1, n = 'firstJoint' ) 
+cmds.move(-6,0,0,'firstJoint') 
+cmds.polySphere( r=1, n = 'secondJoint' )
+cmds.polySphere( r=1, n = 'thirdJoint' )
+cmds.move(6,0,0,'thirdJoint')
+cmds.polyCylinder(r=.3, n='tendon')
+cmds.rotate(0,0,90,'tendon')
+cmds.move(-3,0,0,'tendon')
+cmds.scale(1,3,1,'tendon')
+cmds.polyCylinder(r=.3, n='tendon02')
+cmds.rotate(0,0,90,'tendon02')
+cmds.move(3,0,0,'tendon02')
+cmds.scale(1,3,1,'tendon02')
+
+
+def xyz(xyzLoc):
+    cmds.select( clear=True )
+    jointLoc = cmds.xform(xyzLoc, q=1, ws=1, t=1)
+    scaleLoc = cmds.xform(xyzLoc, q=1, ws=1, s=1)
+    print scaleLoc
+    pJoint=cmds.joint(p=(jointLoc),r=(scaleLoc[0]))
+    pjointList.append(pJoint)
+    #cmds.parent(pJoint,xyzLoc)
+
+xyz('firstJoint')
+xyz('secondJoint')
+xyz('thirdJoint')
+print pjointList
+cmds.select( d=True )
+cmds.select('tendon',add=True)
+cmds.select('tendon02',add=True)
+cmds.select(pjointList,add=True)
+
+
+cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
+#  need to create 2 skin clusters
+
+
+'''
+
+cmds.select('joint1')
+cmds.select('joint2',tgl=True)
+
+cmds.select('tendon', tgl=True)
+cmds.skinCluster(n='ySkin')
+
+cmds.skinCluster('ySkin',edit=True,g='tendon02',wi = 0)
+
+#cmds.skinCluster('tendon','tendon02', pjointList, tsb=True, ug=True,dr = .5 )
+cmds.select(pjointList)
+#cmds.select('tendon', tgl=True)
+cmds.select('tendon02', tgl=True)
+
+cmds.skinCluster(n='ySkin')
+
+
+
+cmds.skinCluster('ySkin','tendon','joint1')
+cmds.skinCluster('ySkin','tendon','joint2')
+
+'''
+
+
+
+
+
