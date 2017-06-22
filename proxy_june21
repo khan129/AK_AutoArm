@@ -11,10 +11,10 @@ def xyzSphere(xyzSphere):
     jointLoc = cmds.xform(xyzSphere, q=1, ws=1, t=1)
     scaleLoc = cmds.xform(xyzSphere, q=1, ws=1, s=1)
     print scaleLoc
-    poxyJoint=cmds.joint(p=(jointLoc),r=(scaleLoc[0]))
+    proxyJoint=cmds.joint(p=(jointLoc),r=(scaleLoc[0]))
     pjointList.append(proxyJoint)
     cmds.parent(proxyJoint,xyzSphere)
-    ###hide proxyJoint
+    cmds.setAttr(proxyJoint + 'visibility',0)
     
 def xyzJoint(xyzJoint)
     jointLoc = cmds.xform(xyzJoint, q=1, ws=1, t=1) 
