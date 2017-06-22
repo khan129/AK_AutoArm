@@ -1,4 +1,3 @@
-#june21 PROXY
 
 from PySide import QtCore, QtGui
 from shiboken import wrapInstance
@@ -28,7 +27,7 @@ def xyz(xyzLoc):
     print scaleLoc
     pJoint=cmds.joint(p=(jointLoc),r=(scaleLoc[0]))
     pjointList.append(pJoint)
-    #cmds.parent(pJoint,xyzLoc)
+    cmds.parent(pJoint,xyzLoc)
 
 xyz('firstJoint')
 xyz('secondJoint')
@@ -36,12 +35,17 @@ xyz('thirdJoint')
 print pjointList
 cmds.select( d=True )
 cmds.select('tendon',add=True)
-cmds.select('tendon02',add=True)
+#cmds.select('tendon02',add=True)
 cmds.select(pjointList,add=True)
 
-
+# to bind the selected objects to the selected skeleton
+#
 cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
-#  need to create 2 skin clusters
+cmds.select( d=True )
+
+cmds.select('tendon02',add=True)
+cmds.select(pjointList,add=True)
+cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
 
 
 '''
