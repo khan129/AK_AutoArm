@@ -10,11 +10,10 @@ def xyzSphere(xyzSphere):
     cmds.select( clear=True )
     jointLoc = cmds.xform(xyzSphere, q=1, ws=1, t=1)
     scaleLoc = cmds.xform(xyzSphere, q=1, ws=1, s=1)
-    print scaleLoc
     proxyJoint=cmds.joint(p=(jointLoc),r=(scaleLoc[0]))
     pjointList.append(proxyJoint)
     cmds.parent(proxyJoint,xyzSphere)
-    cmds.setAttr(proxyJoint + 'visibility',0)
+    cmds.setAttr(proxyJoint + '.visibility',0)
     
 def xyzJoint(xyzJoint)
     jointLoc = cmds.xform(xyzJoint, q=1, ws=1, t=1) 
@@ -53,6 +52,8 @@ cmds.select( d=True )
 cmds.select('tendon02',add=True)
 cmds.select(pjointList,add=True)
 cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
+cmds.select(all=True)
+cmds.parent(proxy_grp)
 ###add everything to proxy_grp 
 
 #if gui button is pressed do the below
