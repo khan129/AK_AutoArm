@@ -4,7 +4,7 @@ from shiboken import wrapInstance
 import maya.OpenMayaUI as apiUI
 import sys
 pjointList = []
-cmds.group(n=proxy_grp)
+cmds.group(n='proxy_grp')
 
 def xyzSphere(xyzSphere):
     cmds.select( clear=True )
@@ -19,7 +19,6 @@ def xyzJoint(xyzJoint)
     jointLoc = cmds.xform(xyzJoint, q=1, ws=1, t=1) 
 
 #set inputs for joint locations and pivot location
-
 #setting up proxy geometry 
 cmds.polySphere( r=1, n = 'firstJoint' ) 
 cmds.move(-6,0,0,'firstJoint') 
@@ -35,9 +34,7 @@ cmds.rotate(0,0,90,'tendon02')
 cmds.move(3,0,0,'tendon02')
 cmds.scale(1,3,1,'tendon02')
 
-#finding sphere location and setting up 
-
-    
+#finding sphere location and setting up    
 xyz('xyzSphere')
 xyz('xyzSphere')
 xyz('xyzSphere')
