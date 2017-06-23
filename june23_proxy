@@ -1,9 +1,9 @@
+#PROXY SET UP SCRIPT - June 23
 from PySide import QtCore, QtGui
 from shiboken import wrapInstance
 import maya.OpenMayaUI as apiUI
 import sys
 pjointList = []
-cmds.group(em=True,n='proxy_grp')
 
 #creates joints and attaches to spheres
 def xyzSphere(xyzSphere):
@@ -14,15 +14,8 @@ def xyzSphere(xyzSphere):
     pjointList.append(proxyJoint)
     cmds.parent(proxyJoint,xyzSphere)
     cmds.setAttr(proxyJoint + '.visibility',0)
-    print proxyJoint
-    print pjointList
     
-def xyzJoint(xyzJoint):
-    jointLoc = cmds.xform(xyzJoint, q=1, ws=1, t=1) 
-    return jointLoc
-
 #set inputs for joint locations and pivot location
-#setting up proxy geometry 
 cmds.polySphere( r=1, n = 'firstJoint' ) 
 cmds.move(-6,0,0,'firstJoint') 
 cmds.polySphere( r=1, n = 'secondJoint' )
@@ -49,15 +42,13 @@ cmds.spaceLocator(n='poleVector')
 cmds.move(0,6,0,'poleVector')
 cmds.parent('poleJoint','poleVector')
 
-
-
-##attach to midjoint and attach to pole geo 
-
 #finding sphere location and setting up    
 xyzSphere('firstJoint')
 xyzSphere('secondJoint')
 xyzSphere('thirdJoint')
 pjointList.append('poleJoint')
+
+#Skinning to joints
 cmds.select( d=True )
 cmds.select('tendon',tgl=True)
 cmds.select(pjointList,tgl=True)
@@ -73,24 +64,26 @@ cmds.select('poleGuide',add=True)
 cmds.select(pjointList,add=True)
 cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
 
-
-
-#delete everything 
+#Put everything in a group
 cmds.select( d=True )
 cmds.select(all=True)
-deletelist = cmds.ls(selection=True)
+proxySelect = cmds.ls(selection=True)
+cmds.group(proxySelect, n='proxy_grp')
 
-
-#if gui button is pressed do the below
+###INPUTS####
 for Joint in pjointList:
-   cmds.select( d=True )
-   jointPos = xyzJoint(Joint)
-   scaleLoc = cmds.xform(Joint, q=1, ws=1, s=1)
-   pJoint=cmds.joint(p=(jointPos), n='worked')
-   ###retrieve poleVector too 
+   if Joint != 'poleJoint':
+       cmds.select( d=True )
+       jointLoc = cmds.xform(Joint, q=1, ws=1, t=1) 
+       scaleLoc = cmds.xform(Joint, q=1, ws=1, s=1)
+       pJoint=cmds.joint(p=(jointLoc), n='worked')
+   
+   else: 
+       polePos = cmds.xform(Joint, q=1, ws=1, t=1)
+    
    
 #delete proxy
-cmds.delete(deletelist)
+#cmds.delete(proxySelect)
 
     
 
