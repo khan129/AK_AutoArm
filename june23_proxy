@@ -19,6 +19,7 @@ def xyzSphere(xyzSphere):
     
 def xyzJoint(xyzJoint):
     jointLoc = cmds.xform(xyzJoint, q=1, ws=1, t=1) 
+    return jointLoc
 
 #set inputs for joint locations and pivot location
 #setting up proxy geometry 
@@ -74,32 +75,25 @@ cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInflu
 
 
 
-'''
-cmds.select( d=True )
-cmds.select('poleGuide',add=True)
-cmds.select('poleJoint',add=True)
-cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
-'''
-
 #delete everything 
 cmds.select( d=True )
 cmds.select(all=True)
 deletelist = cmds.ls(selection=True)
-#cmds.parent(deletelist)
-###add everything to proxy_grp 
+
 
 #if gui button is pressed do the below
-'''
-for every joint in joint:
-   jointPos = xyzJoint(joint)
-   scaleLoc = cmds.xform(xyzSphere, q=1, ws=1, s=1)
-   pJoint=cmds.joint(p=(jointPos),r=(scaleLoc[0]))
+for Joint in pjointList:
+   cmds.select( d=True )
+   jointPos = xyzJoint(Joint)
+   scaleLoc = cmds.xform(Joint, q=1, ws=1, s=1)
+   pJoint=cmds.joint(p=(jointPos), n='worked')
    ###retrieve poleVector too 
    
-cmds.delete(proxy_grp)
+#delete proxy
+cmds.delete(deletelist)
 
     
-'''   
+
 
 
 
