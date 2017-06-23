@@ -37,13 +37,24 @@ cmds.move(3,0,0,'tendon02')
 cmds.scale(1,3,1,'tendon02')
 
 #poleVector
-###cmds.polyPlane()
+cmds.polyCube(n='poleGuide')
+cmds.move(0,3,0,'poleGuide')
+cmds.scale(.1,6,.1,'poleGuide')
+cmds.select( clear=True )
+cmds.joint(n='poleJoint')
+cmds.setAttr('poleJoint.visibility',0)
+cmds.move(0,6,0,'poleJoint')
+cmds.spaceLocator(p=(0,6,0),n='poleVector')
+cmds.parent('poleJoint','poleGuide')
+
+
+
 ##attach to midjoint and attach to pole geo 
 
 #finding sphere location and setting up    
-xyz('firstJoint')
-xyz('secondJoint')
-xyz('thirdJoint')
+xyzSphere('firstJoint')
+xyzSphere('secondJoint')
+xyzSphere('thirdJoint')
 cmds.select( d=True )
 cmds.select('tendon',tgl=True)
 #cmds.select('tendon02',tgl=True)
@@ -56,11 +67,12 @@ cmds.select('tendon02',add=True)
 cmds.select(pjointList,add=True)
 cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
 
+
 #delete everything 
 cmds.select( d=True )
 cmds.select(all=True)
 deletelist = cmds.ls(selection=True)
-cmds.parent(deletelist)
+#cmds.parent(deletelist)
 ###add everything to proxy_grp 
 
 #if gui button is pressed do the below
