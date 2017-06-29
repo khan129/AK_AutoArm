@@ -363,6 +363,11 @@ class MyButtons(QtGui.QWidget):
         if self.chbox_stretchy.isChecked():
             distDim = cmds.distanceDimension( sp=(0, 2, 2), ep=(1, 5, 6))
             listDistLoc = cmds.listConnections(distDim)
+            cmds.hide(distDim)
+            cmds.hide(listDiscLoc)
+            #cmds.parent(distDim,UserIn + '_grp')
+           # cmds.parent(listDiscLoc,UserIn + '_grp')
+
             cmds.pointConstraint(firstJoint, listDistLoc[0], mo = False)
             cmds.pointConstraint(UserIn + '_arm_anim', listDistLoc[1], mo = False)
             cmds.shadingNode ('multiplyDivide', n = UserIn + 'multDivid', asUtility=True)
