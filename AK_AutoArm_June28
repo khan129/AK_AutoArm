@@ -241,7 +241,7 @@ class MyButtons(QtGui.QWidget):
         lastJoint = jointList[-1]
                  
         #IK / FK Switch: creating control 
-        controlC = cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=scaleLoc[0], n=UserIn + '_arm_anim')
+        controlC = cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=(scaleLoc[0])*2, n=UserIn + '_arm_anim')
         ikfk_attr = cmds.addAttr(controlC, longName='IKFK', attributeType='float', defaultValue = 1, k=True )
                     
         #Parents joint to previous using Index & retrieve value for first and last jt. 
@@ -258,7 +258,7 @@ class MyButtons(QtGui.QWidget):
             fkcontrolList.append(nameC)
 
             #cmds.rename(everyobj, UserIn + '_jnt')
-            cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=scaleLoc[0], n= nameC) 
+            cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=(scaleLoc[0])*2, n= nameC) 
             cmds.parentConstraint(everyobj, nameC)
             cmds.parentConstraint(everyobj, nameC, rm = True)
             cmds.orientConstraint(nameC, everyobj, w=1, mo = True)      
@@ -362,12 +362,14 @@ class MyButtons(QtGui.QWidget):
         #Add stretchy
         if self.chbox_stretchy.isChecked():
             distDim = cmds.distanceDimension( sp=(0, 2, 2), ep=(1, 5, 6))
+            cmds.setAttr(distDim +'.visibility', 0)
+            
             listDistLoc = cmds.listConnections(distDim)
-            cmds.hide(distDim)
-            cmds.hide(listDiscLoc)
-            #cmds.parent(distDim,UserIn + '_grp')
-           # cmds.parent(listDiscLoc,UserIn + '_grp')
-
+           
+            '''
+            cmds.parent(distDim,'x')
+            cmds.parent(listDiscLoc,'x')
+            '''
             cmds.pointConstraint(firstJoint, listDistLoc[0], mo = False)
             cmds.pointConstraint(UserIn + '_arm_anim', listDistLoc[1], mo = False)
             cmds.shadingNode ('multiplyDivide', n = UserIn + 'multDivid', asUtility=True)
