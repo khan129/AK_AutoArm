@@ -241,7 +241,7 @@ class MyButtons(QtGui.QWidget):
         lastJoint = jointList[-1]
                  
         #IK / FK Switch: creating control 
-        controlC = cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=10, n=UserIn + '_arm_anim')
+        controlC = cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=scaleLoc[0], n=UserIn + '_arm_anim')
         ikfk_attr = cmds.addAttr(controlC, longName='IKFK', attributeType='float', defaultValue = 1, k=True )
                     
         #Parents joint to previous using Index & retrieve value for first and last jt. 
@@ -258,7 +258,7 @@ class MyButtons(QtGui.QWidget):
             fkcontrolList.append(nameC)
 
             #cmds.rename(everyobj, UserIn + '_jnt')
-            cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=10, n= nameC) 
+            cmds.circle(nr=(0,1,0), c=(0, 0, 0), r=scaleLoc[0], n= nameC) 
             cmds.parentConstraint(everyobj, nameC)
             cmds.parentConstraint(everyobj, nameC, rm = True)
             cmds.orientConstraint(nameC, everyobj, w=1, mo = True)      
