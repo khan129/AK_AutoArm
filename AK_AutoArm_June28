@@ -133,14 +133,18 @@ class MyButtons(QtGui.QWidget):
         cmds.select('poleGuide',add=True)
         cmds.select(pjointList,add=True)
         cmds.skinCluster(tsb=True, maximumInfluences=4, normalizeWeights=1, obeyMaxInfluences=True)
-        '''
+       
         #Put everything in a group
-        cmds.select( d=True )
-        cmds.select(all=True)
-        proxySelect = cmds.ls(selection=True)
-        cmds.group(proxySelect, n='proxy_grp')
+        cmds.group('firstJoint', n='proxy_grp')
+        cmds.parent('secondJoint','proxy_grp')
+        cmds.parent('thirdJoint','proxy_grp')
+        cmds.parent('tendon','proxy_grp')
+        cmds.parent('tendon02','proxy_grp')
+        cmds.parent('poleGuide','proxy_grp')
+        cmds.parent('poleVector','proxy_grp')
+
         ###don't use select all, find better way
-               '''                 
+                            
     #Step 2 Button Pushed     
     def step2buttonClicked(self):
         poleValue = []
@@ -204,7 +208,7 @@ class MyButtons(QtGui.QWidget):
            poleAxis = 'Z'
            print 'pole vector in z set'
 
-        #cmds.delete('proxy_grp')
+        cmds.delete('proxy_grp')
         inputText = self.edittext.text()
         
         ####################
